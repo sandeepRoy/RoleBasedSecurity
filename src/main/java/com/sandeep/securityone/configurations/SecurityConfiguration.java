@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static com.sandeep.securityone.entities.Permission.*;
 import static com.sandeep.securityone.entities.Role.ADMIN;
 import static com.sandeep.securityone.entities.Role.MANAGER;
+import static com.sandeep.securityone.entities.Role.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,14 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
                 .requestMatchers(HttpMethod.PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name())
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/management/**").hasAuthority(ADMIN_DELETE.name())
+
+                // user api's available fro CRUD to admin, CRU to user
+                .requestMatchers("/api/v1/user/**").hasAnyRole(ADMIN.name(), USER.name())
+                .requestMatchers(HttpMethod.GET, "/api/v1/user/**").hasAnyAuthority(ADMIN_READ.name(), USER_READ.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/user/**").hasAnyAuthority(ADMIN_CREATE.name(), USER_CREATE.name())
+                .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").hasAnyAuthority(ADMIN_UPDATE.name(), USER_UPDATE.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasAuthority(ADMIN_DELETE.name())
+
 
                 .anyRequest()
                     .authenticated()
