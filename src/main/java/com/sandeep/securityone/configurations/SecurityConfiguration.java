@@ -36,6 +36,13 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/auth/**") // whitelists
                     .permitAll()
 
+                // user api's available for CRUD to admin, CRU to user
+                .requestMatchers("/api/v1/user/**").hasAnyRole(ADMIN.name(), USER.name())
+                .requestMatchers(HttpMethod.GET, "/api/v1/user/**").hasAnyAuthority(ADMIN_READ.name(), USER_READ.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/user/**").hasAnyAuthority(ADMIN_CREATE.name(), USER_CREATE.name())
+                .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").hasAnyAuthority(ADMIN_UPDATE.name(), USER_UPDATE.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasAuthority(ADMIN_DELETE.name())
+
                 // management apis' available for CRUD to admin, CRU to manager
                 .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                 .requestMatchers(HttpMethod.GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name())
@@ -43,12 +50,12 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name())
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/management/**").hasAuthority(ADMIN_DELETE.name())
 
-                // user api's available fro CRUD to admin, CRU to user
-                .requestMatchers("/api/v1/user/**").hasAnyRole(ADMIN.name(), USER.name())
-                .requestMatchers(HttpMethod.GET, "/api/v1/user/**").hasAnyAuthority(ADMIN_READ.name(), USER_READ.name())
-                .requestMatchers(HttpMethod.POST, "/api/v1/user/**").hasAnyAuthority(ADMIN_CREATE.name(), USER_CREATE.name())
-                .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").hasAnyAuthority(ADMIN_UPDATE.name(), USER_UPDATE.name())
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasAuthority(ADMIN_DELETE.name())
+                // admin api's available for CRUD to admin
+                .requestMatchers("/api/v1/admin/**").hasRole(ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
+                .requestMatchers(HttpMethod.PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
 
 
                 .anyRequest()

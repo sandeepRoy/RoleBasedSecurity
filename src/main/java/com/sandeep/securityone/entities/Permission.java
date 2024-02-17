@@ -1,9 +1,11 @@
 package com.sandeep.securityone.entities;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Permission {
+
     USER_READ("user:read"),
     USER_UPDATE("user:update"),
     USER_CREATE("user:create"),
@@ -19,6 +21,9 @@ public enum Permission {
     MANAGER_CREATE("manager:create"),
     MANAGER_DELETE("manager:delete")
     ;
+
+
+    @Getter
     private final String permission;
 
 }

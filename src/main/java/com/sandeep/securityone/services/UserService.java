@@ -1,5 +1,6 @@
 package com.sandeep.securityone.services;
 
+import com.sandeep.securityone.entities.Role;
 import com.sandeep.securityone.entities.User;
 import com.sandeep.securityone.repositories.UserRepository;
 import com.sandeep.securityone.requests.UserUpdateRequest;
@@ -78,5 +79,16 @@ public class UserService {
         userRepository.save(user);
 
         return "Password Changed";
+    }
+
+    public String deleteUser(Integer id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not Found!"));
+        if(user.getRole().equals(Role.USER)) {
+            userRepository.delete(user);
+            return "Deleted User : " + user.getId();
+        }
+        else{
+            return "Can't Delete, Not a USER : " + user.getId();
+        }
     }
 }

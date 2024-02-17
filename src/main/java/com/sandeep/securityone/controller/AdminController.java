@@ -1,32 +1,48 @@
 package com.sandeep.securityone.controller;
 
+import com.sandeep.securityone.entities.User;
+import com.sandeep.securityone.requests.ChangePasswordRequest;
+import com.sandeep.securityone.requests.UserUpdateRequest;
+import com.sandeep.securityone.services.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/v1/admin")
 public class AdminController {
-    @GetMapping("/get")
-    public ResponseEntity<String> getAdmin() {
-        return new ResponseEntity<>("GET : Admin", HttpStatus.OK);
-    }
-    
-    @PostMapping("/post")
-    public ResponseEntity<String> postAdmin() {
-        return new ResponseEntity<>("POST: Admin", HttpStatus.CREATED);
+
+    @Autowired
+    public AdminService adminService;
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> allUsers = adminService.getAllUsers();
+        return new ResponseEntity<List<User>>(allUsers, HttpStatus.OK);
     }
 
-    @PutMapping("/put")
-    public ResponseEntity<String> putAdmin() {
-        return new ResponseEntity<String>("PUT: Admin", HttpStatus.CREATED);
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequest userUpdateRequest) {
+        System.out.println("32 - AdminController");
+        User user = adminService.updateUserProfile(id, userUpdateRequest);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/changePassword/{id}")
+    public ResponseEntity<String> changePasswordofUser(@PathVariable Integer id, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        String response = adminService.changePasswordofUser(id, changePasswordRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAdmin() {
-        return new ResponseEntity<String>("DELETE: Admin", HttpStatus.CREATED);
+        String response = adminService.deleteAdmin();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

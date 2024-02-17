@@ -45,4 +45,10 @@ public class UserController {
         String response = userService.changePassword(changePasswordRequest);
         return new ResponseEntity<String>(response, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        String response = userService.deleteUser(id);
+        return new ResponseEntity<String>(response, HttpStatus.OK);
+    }
 }

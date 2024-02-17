@@ -1,5 +1,6 @@
 package com.sandeep.securityone.requests;
 
+import com.sandeep.securityone.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,4 +13,5 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
+    private Role role;
 }
